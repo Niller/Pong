@@ -33,6 +33,8 @@ public class ViewManager : MonoBehaviour
 
     private void OnBallSpawn(BallSpawnSignal data)
     {
-
+        var ballGameObject = Instantiate(_config.BallView);
+        var ballView = ballGameObject.GetComponent<BallView>();
+        ballView.Initialize(data.Arg1, _config.PitchSize);
     }
 }

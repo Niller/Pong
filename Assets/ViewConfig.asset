@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 940db58d5933a5f4c8337bfb1c67328c, type: 3}
   m_Name: ViewConfig
   m_EditorClassIdentifier: 
-  PitchSize: {x: 15.72, y: 5}
+  PitchSize: {x: 15.72, y: 9.4}
   BottomBatPosition: -4.7
   TopBatPosition: 4.7
   BatView: {fileID: 7899997524588195582, guid: a7da3df077a63a44287f0304b5cc0e97, type: 3}
