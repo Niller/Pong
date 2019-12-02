@@ -1,4 +1,8 @@
 ﻿
+using Assets.Scripts;
+using Assets.Scripts.Signals;
+using UnityEngine;
+
 public class Bat
 {
     private readonly Pitch _pitch;
@@ -11,14 +15,23 @@ public class Bat
     {
         _pitch = pitch;
         Position = _pitch.BatStartPosition;
+        SignalBus.Subscribe<MoveInputSignal>(OnMoveInput);
+    }
+
+    private void OnMoveInput(MoveInputSignal data)
+    {
+        Position = Mathf.Clamp(Position + data.Arg1 * data.Arg2, -1, 1);
     }
 
     public void Update(float deltaTime)
     {
+
+        /*
         Position += deltaTime * _sign;
-        if (Position >= _pitch.Size.x || Position <= 0)
+        if (Position >= 1 || Position <= -1)
         {
             _sign *= -1;
         }
+        */
     }
 }

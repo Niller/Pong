@@ -8,6 +8,7 @@ public class Bootstrapper : MonoBehaviour
     private void Awake()
     {
         var fsmManager = ServiceLocator.Register(new FsmManager());
+        ServiceLocator.Register<IInputSystem>(new KeyboardInputSystem());
 
         gameObject.AddComponent<GameManager>();
 

@@ -15,4 +15,11 @@ namespace Assets.Scripts
         {
         }
     }
+
+    public class MoveInputSignal : Signal<int, float>
+    {
+        public MoveInputSignal(int direction, float force) : base(direction, force)
+        {
+        }
+    }
 }
