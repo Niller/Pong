@@ -8,6 +8,7 @@ public class Bat
     private readonly Pitch _pitch;
 
     public Vector2 Position;
+    public float Length;
 
     private float _sign = 1;
 
@@ -15,12 +16,13 @@ public class Bat
     {
         _pitch = pitch;
         Position = startPosition;
+        Length = 0.5f;
         SignalBus.Subscribe<MoveInputSignal>(OnMoveInput);
     }
 
     private void OnMoveInput(MoveInputSignal data)
     {
-        Position = new Vector2(Mathf.Clamp(Position.x + data.Arg1 * data.Arg2, -1, 1), Position.y);
+        Position = new Vector2(Mathf.Clamp(Position.x + data.Arg1 * data.Arg2, -1f + Length, 1f - Length), Position.y);
     }
 
     public void Update(float deltaTime)
