@@ -2,6 +2,8 @@
 
 public class Ball
 {
+    private const float SpeedIncrement = 0.05f;
+
     public Vector2 Position
     {
         get;
@@ -14,7 +16,12 @@ public class Ball
         private set;
     }
 
-    private float _speed = 0.7f;
+    public float Speed
+    {
+        get;
+        private set;
+    } = 0.7f;
+
     private readonly PongManager _pongManager;
 
     private float _postDeathFlyLength = 0.5f;
@@ -33,7 +40,7 @@ public class Ball
 
     public void Update(float deltaTime)
     {
-        var deltaMove = Direction * deltaTime * _speed;
+        var deltaMove = Direction * deltaTime * Speed;
         Position += deltaMove;
 
         if (_postDeath)
@@ -61,6 +68,7 @@ public class Ball
                 _postDeath = true;
             }
 
+            Speed += SpeedIncrement;
             Direction = newDirection;
         }
 

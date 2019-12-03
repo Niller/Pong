@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts;
+using Assets.Scripts.Signals;
+using UnityEngine;
 
 public class BallView : PongObjectView
 {
@@ -7,14 +9,29 @@ public class BallView : PongObjectView
     [SerializeField]
     private GameObject _view;
 
+    private Vector3 _rotationSpeed;
+    private Transform _viewTransform;
+
     public void Initialize(Ball ball, Vector2 pitchSize)
     {
         base.Initialize(pitchSize);
         _ball = ball;
 
-        var viewTransform = _view.transform;
+        _viewTransform = _view.transform;
         var radius = _ball.Size * pitchSize.y;
-        viewTransform.localScale = new Vector3(radius, radius, radius);
+        _viewTransform.localScale = new Vector3(radius, radius, radius);
+
+        SignalBus.Subscribe<BallHitSignal>(OnBallHit);
+    }
+
+    private void OnDestroy()
+    {
+        SignalBus.Unsubscribe<BallHitSignal>(OnBallHit);
+    }
+
+    private void OnBallHit(BallHitSignal data)
+    {
+        _rotationSpeed = new Vector3(Random.value, Random.value, Random.value) * Random.Range(2, 5);
     }
 
     private void Update()
@@ -23,5 +40,7 @@ public class BallView : PongObjectView
             _ball.Position.x * (PitchSize.x / 2f),
             _ball.Position.y * (PitchSize.y / 2f), 
             Transform.localPosition.z);
+
+        _viewTransform.Rotate(_rotationSpeed);
     }
 }

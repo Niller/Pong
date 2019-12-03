@@ -16,6 +16,13 @@ namespace Assets.Scripts
         }
     }
 
+    public class BallHitSignal : Signal
+    {
+        public BallHitSignal() : base()
+        {
+        }
+    }
+
     public class BallDespawnSignal : Signal<Ball>
     {
         public BallDespawnSignal(Ball ball) : base(ball)

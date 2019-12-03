@@ -6,6 +6,8 @@ public class PongManager
 {
     private const float BounceCoefficient = 0.5f;
 
+    private int _score;
+
     public Paddle Paddle1
     {
         get;
@@ -24,16 +26,20 @@ public class PongManager
         private set;
     }
 
+    
     public int Score
     {
-        get;
-        private set;
+        get => _score;
+        private set
+        {
+            _score = value;
+            SignalBus.Invoke(new ScoreChangedSignal(Score));
+        }
     }
 
     public void Initialize()
     {
         Score = 0;
-        SignalBus.Invoke(new ScoreChangedSignal(Score));
     }
 
     public void SpawnPaddles()
@@ -58,8 +64,8 @@ public class PongManager
         }
 
         Score++;
-        SignalBus.Invoke(new ScoreChangedSignal(Score));
 
+        SignalBus.Invoke(new BallHitSignal());
         currentPaddle.OnBallHit(relativeIntersect);
         newDirection = new Vector2(relativeIntersect * BounceCoefficient, -ball.Direction.y).normalized;
         return true;
@@ -73,6 +79,8 @@ public class PongManager
 
     public void DespawnBall()
     {
+        Score = 0;
+
         SignalBus.Invoke(new BallDespawnSignal(Ball));
         SpawnBall();
     }
