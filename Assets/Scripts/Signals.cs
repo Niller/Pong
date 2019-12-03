@@ -2,9 +2,9 @@
 
 namespace Assets.Scripts
 {
-    public class GameStartedSignal : Signal<Bat, Bat>
+    public class GameStartedSignal : Signal<Paddle, Paddle>
     {
-        public GameStartedSignal(Bat bat1, Bat bat2) : base(bat1, bat2)
+        public GameStartedSignal(Paddle bat1, Paddle bat2) : base(bat1, bat2)
         {
         }
     }
@@ -12,6 +12,13 @@ namespace Assets.Scripts
     public class BallSpawnSignal : Signal<Ball>
     {
         public BallSpawnSignal(Ball ball) : base(ball)
+        {
+        }
+    }
+
+    public class BallDespawnSignal : Signal<Ball>
+    {
+        public BallDespawnSignal(Ball ball) : base(ball)
         {
         }
     }

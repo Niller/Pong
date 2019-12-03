@@ -5,20 +5,16 @@ using UnityEngine;
 
 public class PongMatchState : BaseState
 {
-    private Bat _bat1;
-    private Bat _bat2;
     private Ball _ball;
-    private Pitch _pitch;
+    private PongManager _pongManager;
 
     public override void Enter()
     {
-        _pitch = new Pitch();
-        _bat1 = new Bat(_pitch, Vector2.down);
-        _bat2 = new Bat(_pitch, Vector2.up);
-        _ball = new Ball(Vector2.zero);
+        _pongManager = ServiceLocator.Get<PongManager>();
+        _pongManager.SpawnPaddles();
+        _pongManager.SpawnBall();
 
-        SignalBus.Invoke(new GameStartedSignal(_bat1, _bat2));
-        SignalBus.Invoke(new BallSpawnSignal(_ball));
+        SignalBus.Invoke(new GameStartedSignal(_pongManager.Paddle1, _pongManager.Paddle2));
     }
 
     public override void Exit()
@@ -28,8 +24,6 @@ public class PongMatchState : BaseState
 
     public override void Execute(float deltaTime)
     {
-        _bat1.Update(deltaTime);
-        _bat2.Update(deltaTime);
-        _ball.Update(deltaTime);
+        _pongManager.Update(deltaTime);
     }
 }

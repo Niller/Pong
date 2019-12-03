@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Fsm;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class ApplicationManager : MonoBehaviour
 {
     private FsmManager _fsmManager;
     private IInputSystem _inputSystem;

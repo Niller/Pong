@@ -9,8 +9,9 @@ public class Bootstrapper : MonoBehaviour
     {
         var fsmManager = ServiceLocator.Register(new FsmManager());
         ServiceLocator.Register<IInputSystem>(new KeyboardInputSystem());
+        ServiceLocator.Register(new PongManager());
 
-        gameObject.AddComponent<GameManager>();
+        gameObject.AddComponent<ApplicationManager>();
 
         var viewManager = gameObject.AddComponent<ViewManager>();
         viewManager.Initialize(ViewConfig);
