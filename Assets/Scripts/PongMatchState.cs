@@ -11,6 +11,7 @@ public class PongMatchState : BaseState
     public override void Enter()
     {
         _pongManager = ServiceLocator.Get<PongManager>();
+        _pongManager.Initialize();
         _pongManager.SpawnPaddles();
         _pongManager.SpawnBall();
 

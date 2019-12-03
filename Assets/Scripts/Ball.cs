@@ -17,8 +17,10 @@ public class Ball
     private float _speed = 0.7f;
     private readonly PongManager _pongManager;
 
+    private float _postDeathFlyLength = 0.5f;
+    private bool _postDeath;
+
     public float Size;
-    
 
     public Ball(Vector2 startPosition)
     {
@@ -31,7 +33,19 @@ public class Ball
 
     public void Update(float deltaTime)
     {
-        Position += Direction * deltaTime * _speed;
+        var deltaMove = Direction * deltaTime * _speed;
+        Position += deltaMove;
+
+        if (_postDeath)
+        {
+            _postDeathFlyLength -= deltaMove.magnitude;
+
+            if (_postDeathFlyLength < 0)
+            {
+                _pongManager.DespawnBall();
+            }
+            return;
+        }
 
         //Wall collision
         if (Position.x >= 1 - Size || Position.x <= -1 + Size)
@@ -44,7 +58,7 @@ public class Ball
         {
             if (!_pongManager.CheckCollision(this, out var newDirection))
             {
-                _pongManager.DespawnBall();
+                _postDeath = true;
             }
 
             Direction = newDirection;

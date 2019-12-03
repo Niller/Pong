@@ -24,6 +24,18 @@ public class PongManager
         private set;
     }
 
+    public int Score
+    {
+        get;
+        private set;
+    }
+
+    public void Initialize()
+    {
+        Score = 0;
+        SignalBus.Invoke(new ScoreChangedSignal(Score));
+    }
+
     public void SpawnPaddles()
     {
         Paddle1 = new Paddle(Vector2.down);
@@ -44,6 +56,9 @@ public class PongManager
             newDirection = ball.Direction;
             return false;
         }
+
+        Score++;
+        SignalBus.Invoke(new ScoreChangedSignal(Score));
 
         currentPaddle.OnBallHit(relativeIntersect);
         newDirection = new Vector2(relativeIntersect * BounceCoefficient, -ball.Direction.y).normalized;

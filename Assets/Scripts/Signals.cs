@@ -29,4 +29,11 @@ namespace Assets.Scripts
         {
         }
     }
+
+    public class ScoreChangedSignal : Signal<int>
+    {
+        public ScoreChangedSignal(int newScore) : base(newScore)
+        {
+        }
+    }
 }
