@@ -20,8 +20,10 @@ public class Bootstrapper : MonoBehaviour
         var viewManager = gameObject.AddComponent<ViewManager>();
         viewManager.Initialize(_viewConfig);
 
+        fsmManager.AddState<GuiState>();
         fsmManager.AddState<PongMatchState>();
-        //fsmManager.GoToState<PongMatchState>();
+        
+        fsmManager.GoToState<GuiState>();
 
         Destroy(this);
     }
