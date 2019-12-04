@@ -5,7 +5,7 @@ namespace Assets.Scripts.Fsm
 {
     public class FsmManager : IDisposable
     {
-        private Dictionary<string, object> _blackboard = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _blackboard = new Dictionary<string, object>();
 
         private readonly Dictionary<Type, IState> _states = new Dictionary<Type, IState>();
         private IState _currentState;

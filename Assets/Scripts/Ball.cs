@@ -2,7 +2,13 @@
 
 public class Ball
 {
-    private const float SpeedIncrement = 0.05f;
+    private readonly float _speedIncrement;
+
+    //TODO Use fsm instead this
+    private float _postDeathFlyLength = 0.5f;
+    private bool _postDeath;
+
+    private readonly PongManager _pongManager;
 
     public Vector2 Position
     {
@@ -20,20 +26,19 @@ public class Ball
     {
         get;
         private set;
-    } = 0.7f;
+    }
 
-    private readonly PongManager _pongManager;
+    public float Size
+    {
+        get;
+    }
 
-    private float _postDeathFlyLength = 0.5f;
-    private bool _postDeath;
-
-    public float Size;
-
-    public Ball(Vector2 startPosition)
+    public Ball(Vector2 startPosition, float size, float speed, float speedIncrement)
     {
         Position = startPosition;
-        //_direction = new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized;
-        Size = 0.03f;
+        Size = size;
+        Speed = speed;
+        _speedIncrement = speedIncrement;
         Direction = Random.insideUnitCircle.normalized;
         _pongManager = ServiceLocator.Get<PongManager>();
     }
@@ -68,7 +73,7 @@ public class Ball
                 _postDeath = true;
             }
 
-            Speed += SpeedIncrement;
+            Speed += _speedIncrement;
             Direction = newDirection;
         }
 

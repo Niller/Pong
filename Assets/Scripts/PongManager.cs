@@ -7,6 +7,7 @@ public class PongManager
     private const float BounceCoefficient = 0.5f;
 
     private int _score;
+    private GameDifficult _gameDifficult;
 
     public Paddle Paddle1
     {
@@ -26,7 +27,6 @@ public class PongManager
         private set;
     }
 
-    
     public int Score
     {
         get => _score;
@@ -37,9 +37,10 @@ public class PongManager
         }
     }
 
-    public void Initialize()
+    public void Initialize(GameDifficult gameDifficult)
     {
         Score = 0;
+        _gameDifficult = gameDifficult;
     }
 
     public void SpawnPaddles()
@@ -73,12 +74,19 @@ public class PongManager
 
     public void SpawnBall()
     {
-        Ball = new Ball(Vector2.zero);
+        Ball = new Ball(
+            Vector2.zero,
+            _gameDifficult.BallSize, 
+            _gameDifficult.InitialBallSpeed, 
+            _gameDifficult.BallSpeedIncrement);
+
         SignalBus.Invoke(new BallSpawnSignal(Ball));
     }
 
     public void DespawnBall()
     {
+        ServiceLocator.Get<SettingsManager>().TrySaveHighscore(Score);
+        SignalBus.Invoke(new HighscoreChangedSignal(Score));
         Score = 0;
 
         SignalBus.Invoke(new BallDespawnSignal(Ball));
@@ -90,5 +98,13 @@ public class PongManager
         Paddle1.Update(deltaTime);
         Paddle2.Update(deltaTime);
         Ball.Update(deltaTime);
+    }
+
+    public void Dispose()
+    {
+        Ball = null;
+        Paddle1 = null;
+        Paddle2 = null;
+        Score = 0;
     }
 }

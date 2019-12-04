@@ -1,10 +1,22 @@
-﻿using Assets.Scripts.Fsm;
+﻿using System.Linq;
+using Assets.Scripts.Fsm;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StartGameUiController : MonoBehaviour
 {
+    [SerializeField]
+#pragma warning disable 649
+    private ToggleGroup _difficultToggleGroup;
+#pragma warning restore 649
+
     public void StartGame()
     {
-        ServiceLocator.Get<FsmManager>().GoToState<PongMatchState>();
+        var fsmManager = ServiceLocator.Get<FsmManager>();
+        
+        // ReSharper disable once PossibleNullReferenceException
+        fsmManager.SetBlackboardValue("Difficult", _difficultToggleGroup.ActiveToggles().First().transform.GetSiblingIndex());
+
+        fsmManager.GoToState<PongMatchState>();
     }
 }

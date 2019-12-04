@@ -43,4 +43,18 @@ namespace Assets.Scripts
         {
         }
     }
+
+    public class HighscoreChangedSignal : Signal<int>
+    {
+        public HighscoreChangedSignal(int newScore) : base(newScore)
+        {
+        }
+    }
+
+    public class MatchStopSignal : Signal
+    {
+        public MatchStopSignal() : base()
+        {
+        }
+    }
 }

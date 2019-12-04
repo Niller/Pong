@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Signals;
+using UnityEngine;
 
 public class SettingsManager
 {
@@ -16,9 +17,13 @@ public class SettingsManager
         Config = config;
     }
 
-    public void SaveScore(int value)
+    public void TrySaveHighscore(int value)
     {
-        PlayerPrefs.SetInt(HighScoreKey, value);
+        var currentHighscore = LoadHighscore();
+        if (currentHighscore < value)
+        {
+            PlayerPrefs.SetInt(HighScoreKey, value);
+        }
     }
 
     public void SaveBallColor(int color1, int color2)
@@ -27,7 +32,7 @@ public class SettingsManager
         PlayerPrefs.SetInt(BallColor2Key, color2);
     }
 
-    public int LoadScore()
+    public int LoadHighscore()
     {
         return PlayerPrefs.GetInt(HighScoreKey, 0);
     }

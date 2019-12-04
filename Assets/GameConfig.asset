@@ -28,3 +28,16 @@ MonoBehaviour:
   - Name: White
     Sprite: {fileID: 21300000, guid: c3f36526398bd2b448511308b34b3d76, type: 3}
     Color: {r: 1, g: 1, b: 1, a: 0}
+  Difficulties:
+  - Description: Easy
+    BallSize: 0.06
+    InitialBallSpeed: 0.7
+    BallSpeedIncrement: 0.05
+  - Description: Medium
+    BallSize: 0.03
+    InitialBallSpeed: 0.9
+    BallSpeedIncrement: 0.07
+  - Description: Hard
+    BallSize: 0.02
+    InitialBallSpeed: 1
+    BallSpeedIncrement: 0.1

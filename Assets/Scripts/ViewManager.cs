@@ -16,6 +16,7 @@ public class ViewManager : MonoBehaviour
         SignalBus.Subscribe<GameStartedSignal>(OnGameStarted);
         SignalBus.Subscribe<BallSpawnSignal>(OnBallSpawn);
         SignalBus.Subscribe<BallDespawnSignal>(OnBallDespawn);
+        SignalBus.Subscribe<MatchStopSignal>(OnMatchStop);
     }
 
     private void OnDestroy()
@@ -24,6 +25,7 @@ public class ViewManager : MonoBehaviour
         SignalBus.Unsubscribe<GameStartedSignal>(OnGameStarted);
         SignalBus.Unsubscribe<BallSpawnSignal>(OnBallSpawn);
         SignalBus.Unsubscribe<BallDespawnSignal>(OnBallDespawn);
+        SignalBus.Unsubscribe<MatchStopSignal>(OnMatchStop);
     }
 
     private void OnGameStarted(GameStartedSignal data)
@@ -54,5 +56,14 @@ public class ViewManager : MonoBehaviour
             Destroy(ballGameObject);
             _views.Remove(data.Arg1);
         }
+    }
+
+    private void OnMatchStop(MatchStopSignal data)
+    {
+        foreach (var view in _views.Values)
+        {
+            Destroy(view);
+        }
+        _views.Clear();
     }
 }

@@ -12,6 +12,9 @@ public class BallView : PongObjectView
     private Vector3 _rotationSpeed;
     private Transform _viewTransform;
 
+    private readonly int _shaderColor1PropertyId = Shader.PropertyToID("_Color1");
+    private readonly int _shaderColor2PropertyId = Shader.PropertyToID("_Color2");
+
     public void Initialize(Ball ball, Vector2 pitchSize)
     {
         base.Initialize(pitchSize);
@@ -20,6 +23,13 @@ public class BallView : PongObjectView
         _viewTransform = _view.transform;
         var radius = _ball.Size * pitchSize.y;
         _viewTransform.localScale = new Vector3(radius, radius, radius);
+
+        var settingsManager = ServiceLocator.Get<SettingsManager>();
+
+        var material = _view.GetComponent<Renderer>().sharedMaterial;
+        var ballColors = settingsManager.LoadBallColor();
+        material.SetColor(_shaderColor1PropertyId, settingsManager.Config.BallColors[ballColors.Item1].Color);
+        material.SetColor(_shaderColor2PropertyId, settingsManager.Config.BallColors[ballColors.Item2].Color);
 
         SignalBus.Subscribe<BallHitSignal>(OnBallHit);
     }
