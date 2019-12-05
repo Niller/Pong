@@ -10,12 +10,28 @@ public class KeyboardInputSystem : IInputSystem
     {
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            SignalBus.Invoke(new MoveInputSignal(1, DefaultForce));
+            SignalBus.Invoke(new MoveInputSignal(0, 1, DefaultForce));
+            if (!ServiceLocator.Get<PongManager>().IsMultiplayer)
+            {
+                SignalBus.Invoke(new MoveInputSignal(1, 1, DefaultForce));
+            }
+            else
+            {
+                ServiceLocator.Get<NetworkGameManager>().CallPaddleInput(1, DefaultForce);
+            }
         }
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            SignalBus.Invoke(new MoveInputSignal(-1, DefaultForce));
+            SignalBus.Invoke(new MoveInputSignal(0, -1, DefaultForce));
+            if (!ServiceLocator.Get<PongManager>().IsMultiplayer)
+            {
+                SignalBus.Invoke(new MoveInputSignal(1, -1, DefaultForce));
+            }
+            else
+            {
+                ServiceLocator.Get<NetworkGameManager>().CallPaddleInput(-1, DefaultForce);
+            }
         }
     }
 }

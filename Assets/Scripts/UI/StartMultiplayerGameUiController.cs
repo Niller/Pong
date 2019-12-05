@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Fsm;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,62 +10,55 @@ public class StartMultiplayerGameUiController : BaseUiController
     [SerializeField]
     private GameObject _buttons;
 
-    private NetworkManager _networkManager;
+    private NetworkConnectionManager _networkConnectionManager;
 
     private void OnEnable()
     {
-        if (!ServiceLocator.TryGet<NetworkManager>(out _networkManager))
-        {
-            _networkManager = CreateNetworkManager();
-        }
+        _networkConnectionManager = ServiceLocator.Get<NetworkConnectionManager>();
 
-        _networkManager.Connect();
+        _networkConnectionManager.Connect();
         _buttons.SetActive(false);
         _statusText.text = "Connecting to Master...";
         _statusText.gameObject.SetActive(true);
-        _networkManager.ConnectedToMaster += OnConnectedToMaster;
+        _networkConnectionManager.ConnectedToMaster += OnConnectedToMaster;
     }
 
     private void OnDisable()
     {
-        _networkManager.ConnectedToMaster -= OnConnectedToMaster;
-        _networkManager.GameReady -= OnGameReady;
+        _networkConnectionManager.ConnectedToMaster -= OnConnectedToMaster;
+        _networkConnectionManager.GameReady -= OnGameReady;
     }
 
     private void OnConnectedToMaster()
     {
-        _networkManager.ConnectedToMaster -= OnConnectedToMaster;
+        _networkConnectionManager.ConnectedToMaster -= OnConnectedToMaster;
         _statusText.gameObject.SetActive(false);
         _buttons.SetActive(true);
     }
 
-    private NetworkManager CreateNetworkManager()
-    {
-        var networkManagerGo = new GameObject("Network manager");
-        var networkManager = networkManagerGo.AddComponent<NetworkManager>();
-        return ServiceLocator.Register(networkManager);
-    }
-
     private void OnGameReady()
     {
-        ServiceLocator.Get<FsmManager>().GoToState<PongMatchState>();
+        var fsmManager = ServiceLocator.Get<FsmManager>();
+        fsmManager.SetBlackboardValue("Difficult", 1);
+        fsmManager.SetBlackboardValue("Multiplayer", true);
+        fsmManager.GoToState<PongMatchState>();
     }
 
     public void Host()
     {
         _buttons.SetActive(false);
         _statusText.gameObject.SetActive(true);
-        _networkManager.Host();
+        _networkConnectionManager.Host();
         _statusText.text = "Wait player...";
-        _networkManager.GameReady += OnGameReady;
+        _networkConnectionManager.GameReady += OnGameReady;
     }
 
     public void Join()
     {
         _buttons.SetActive(false);
         _statusText.gameObject.SetActive(true);
-        _networkManager.Join();
+        _networkConnectionManager.Join();
         _statusText.text = "Finding room...";
-        _networkManager.GameReady += OnGameReady;
+        _networkConnectionManager.GameReady += OnGameReady;
     }
 }

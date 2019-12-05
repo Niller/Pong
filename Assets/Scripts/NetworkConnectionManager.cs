@@ -2,9 +2,13 @@
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class NetworkManager : MonoBehaviourPunCallbacks
+public class NetworkConnectionManager : MonoBehaviourPunCallbacks
 {
+    private GameObject _networkingGameObject;
+    private GameObject _networkingInstance;
+
     public bool ConnectingToMaster
     {
         get;
@@ -15,19 +19,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public event Action GameReady;
     public event Action Disconnected;
 
+    public void Initialize(GameObject networkingGameGameObject)
+    {
+        _networkingGameObject = networkingGameGameObject;
+    }
+
     public void Connect()
     {
         ConnectingToMaster = true;
 
-        //Settings (all optional and only for tutorial purpose)
-        PhotonNetwork.OfflineMode = false;           //true would "fake" an online connection
-        PhotonNetwork.NickName = "PlayerName";       //to set a player name
-        PhotonNetwork.AutomaticallySyncScene = true; //to call PhotonNetwork.LoadLevel()
-        PhotonNetwork.GameVersion = "v1";            //only people with the same game version can play together
+        PhotonNetwork.OfflineMode = false; 
+        PhotonNetwork.NickName = "PlayerName" + Random.Range(0, int.MaxValue);
+        PhotonNetwork.GameVersion = "1.0";
+        PhotonNetwork.SendRate = 30;
 
-        //PhotonNetwork.ConnectToMaster(ip,port,appid); //manual connection
         if (!PhotonNetwork.OfflineMode)
-            PhotonNetwork.ConnectUsingSettings();           //automatic connection based on the config file in Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset
+            PhotonNetwork.ConnectUsingSettings();   
     }
 
     public override void OnConnectedToMaster()
@@ -74,6 +81,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         base.OnDisconnected(cause);
         ConnectingToMaster = false;
+        PhotonNetwork.Destroy(_networkingInstance);
+        _networkingInstance = null;
         Debug.Log(cause);
         Disconnected?.Invoke();
     }
@@ -93,6 +102,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
+            _networkingInstance = PhotonNetwork.Instantiate(_networkingGameObject.name, Vector3.zero, Quaternion.identity);
+            ServiceLocator.Register(_networkingInstance.AddComponent<NetworkGameManager>());
             GameReady?.Invoke();
         }
     }

@@ -20,8 +20,11 @@ public class Paddle
 
     public event Action<float> BallHit;
 
-    public Paddle(Vector2 startPosition)
+    private readonly int _index;
+
+    public Paddle(int index, Vector2 startPosition)
     {
+        _index = index;
         Position = startPosition;
         Length = 0.2f;
         SignalBus.Subscribe<MoveInputSignal>(OnMoveInput);
@@ -29,7 +32,12 @@ public class Paddle
 
     private void OnMoveInput(MoveInputSignal data)
     {
-        Position = new Vector2(Mathf.Clamp(Position.x + data.Arg1 * data.Arg2, -1f + Length, 1f - Length), Position.y);
+        if (data.Arg1 != _index)
+        {
+            return;
+        }
+
+        Position = new Vector2(Mathf.Clamp(Position.x + data.Arg2 * data.Arg3, -1f + Length, 1f - Length), Position.y);
     }
 
     public void OnBallHit(float relativeHitPosition)

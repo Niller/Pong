@@ -12,7 +12,16 @@ public class MobileInputSystem : IInputSystem
         }
 
         var delta = Input.GetTouch(0).deltaPosition;
-
-        SignalBus.Invoke(new MoveInputSignal((int)Mathf.Sign(delta.x), Mathf.Abs(delta.x / Screen.width)));
+        var direction = (int) Mathf.Sign(delta.x);
+        var force = Mathf.Abs(delta.x / Screen.width);
+        SignalBus.Invoke(new MoveInputSignal(0, direction, force));
+        if (!ServiceLocator.Get<PongManager>().IsMultiplayer)
+        {
+            SignalBus.Invoke(new MoveInputSignal(1, direction, force));
+        }
+        else
+        {
+            ServiceLocator.Get<NetworkGameManager>().CallPaddleInput(direction, force);
+        }
     }
 }

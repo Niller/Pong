@@ -30,9 +30,9 @@ namespace Assets.Scripts
         }
     }
 
-    public class MoveInputSignal : Signal<int, float>
+    public class MoveInputSignal : Signal<int, int, float>
     {
-        public MoveInputSignal(int direction, float force) : base(direction, force)
+        public MoveInputSignal(int paddle, int direction, float force) : base(paddle, direction, force)
         {
         }
     }

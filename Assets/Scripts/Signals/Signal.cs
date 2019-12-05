@@ -44,7 +44,7 @@
             get;
         }
 
-        public T1 Arg3
+        public T2 Arg3
         {
             get;
         }
@@ -53,7 +53,7 @@
         {
             Arg1 = arg1;
             Arg2 = arg2;
-            Arg3 = arg2;
+            Arg3 = arg3;
         }
     }
 

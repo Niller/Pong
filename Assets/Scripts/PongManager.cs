@@ -27,6 +27,12 @@ public class PongManager
         private set;
     }
 
+    public bool IsMultiplayer
+    {
+        get;
+        private set;
+    }
+
     public int Score
     {
         get => _score;
@@ -37,16 +43,17 @@ public class PongManager
         }
     }
 
-    public void Initialize(GameDifficult gameDifficult)
+    public void Initialize(GameDifficult gameDifficult, bool isMultiplayer)
     {
+        IsMultiplayer = isMultiplayer;
         Score = 0;
         _gameDifficult = gameDifficult;
     }
 
     public void SpawnPaddles()
     {
-        Paddle1 = new Paddle(Vector2.down);
-        Paddle2 = new Paddle(Vector2.up);
+        Paddle1 = new Paddle(0, Vector2.down);
+        Paddle2 = new Paddle(1, Vector2.up);
     }
 
     public bool CheckCollision(Ball ball, out Vector2 newDirection)

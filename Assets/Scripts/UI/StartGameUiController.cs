@@ -16,6 +16,7 @@ public class StartGameUiController : BaseUiController
         
         // ReSharper disable once PossibleNullReferenceException
         fsmManager.SetBlackboardValue("Difficult", _difficultToggleGroup.ActiveToggles().First().transform.GetSiblingIndex());
+        fsmManager.SetBlackboardValue("Multiplayer", false);
 
         fsmManager.GoToState<PongMatchState>();
     }

@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Fsm;
+using Photon.Pun;
 using UnityEngine;
 
 public class Bootstrapper : MonoBehaviour
@@ -15,6 +16,12 @@ public class Bootstrapper : MonoBehaviour
 
     [SerializeField]
     private Transform _guiRoot;
+
+    [SerializeField]
+    private GameObject _networkingGameGameObject;
+
+    [SerializeField]
+    private GameObject _networkingConnectGameObject;
 #pragma warning restore 649
 
     private void Awake()
@@ -31,6 +38,8 @@ public class Bootstrapper : MonoBehaviour
         ServiceLocator.Register(new PongManager());
         ServiceLocator.Register(new SettingsManager()).Initialize(_gameConfig);
 
+        InitializeNetworking();
+
         gameObject.AddComponent<ApplicationManager>();
 
         var viewManager = gameObject.AddComponent<ViewManager>();
@@ -42,5 +51,11 @@ public class Bootstrapper : MonoBehaviour
         fsmManager.GoToState<GuiState>();
 
         Destroy(this);
+    }
+
+    private void InitializeNetworking()
+    {
+        var go = Instantiate(_networkingGameGameObject);
+        ServiceLocator.Register(go.GetComponent<NetworkConnectionManager>()).Initialize(_networkingGameGameObject);
     }
 }

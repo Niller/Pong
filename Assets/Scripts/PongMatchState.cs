@@ -12,9 +12,10 @@ public class PongMatchState : BaseState
         ServiceLocator.Get<GuiManager>().Open(GuiViewType.Match, true);
 
         var difficult = (int) FsmManager.GetBlackboardValue("Difficult");
+        var multiplayer = (bool)FsmManager.GetBlackboardValue("Multiplayer");
 
         _pongManager = ServiceLocator.Get<PongManager>();
-        _pongManager.Initialize(ServiceLocator.Get<SettingsManager>().Config.Difficulties[difficult]);
+        _pongManager.Initialize(ServiceLocator.Get<SettingsManager>().Config.Difficulties[difficult], multiplayer);
         _pongManager.SpawnPaddles();
         _pongManager.SpawnBall();
 
