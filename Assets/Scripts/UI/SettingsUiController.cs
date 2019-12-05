@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsUiController : MonoBehaviour
+public class SettingsUiController : BaseUiController
 {
+#pragma warning disable 649
     [SerializeField]
     private Dropdown _color1Dropdown;
     [SerializeField]
     private Dropdown _color2Dropdown;
+#pragma warning restore 649
 
     private SettingsManager _settingsManager;
 

@@ -1,16 +1,17 @@
 ﻿using Assets.Scripts;
-using Assets.Scripts.Fsm;
 using Assets.Scripts.Signals;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PongMatchUiController : MonoBehaviour
+public class PongMatchUiController : BaseUiController
 {
+#pragma warning disable 649
     [SerializeField]
     private Text _maxScoreText;
 
     [SerializeField]
     private Text _currentScoreText;
+#pragma warning restore 649
 
     private void Awake()
     {
@@ -53,26 +54,8 @@ public class PongMatchUiController : MonoBehaviour
         _maxScoreText.text = ServiceLocator.Get<SettingsManager>().LoadHighscore().ToString();
     }
 
-    public void PauseGame()
+    public void OpenMenu()
     {
-        Time.timeScale = 0;
+        ServiceLocator.Get<GuiManager>().Open(GuiViewType.MatchMenu);
     }
-
-    public void ResumeGame()
-    {
-        Time.timeScale = 1;
-    }
-
-    public void QuitGame()
-    {
-        ResumeGame();
-        ServiceLocator.Get<FsmManager>().GoToState<GuiState>();
-    }
-
-    public void RestartGame()
-    {
-        ResumeGame();
-        ServiceLocator.Get<FsmManager>().GoToState<PongMatchState>();
-    }
-
 }

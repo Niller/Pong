@@ -9,6 +9,12 @@ public class Bootstrapper : MonoBehaviour
 
     [SerializeField]
     private GameConfig _gameConfig;
+
+    [SerializeField]
+    private GuiConfig _guiConfig;
+
+    [SerializeField]
+    private Transform _guiRoot;
 #pragma warning restore 649
 
     private void Awake()
@@ -21,6 +27,7 @@ public class Bootstrapper : MonoBehaviour
         ServiceLocator.Register<IInputSystem>(new KeyboardInputSystem());
 #endif
 
+        ServiceLocator.Register(new GuiManager()).Initialize(_guiConfig, _guiRoot);
         ServiceLocator.Register(new PongManager());
         ServiceLocator.Register(new SettingsManager()).Initialize(_gameConfig);
 

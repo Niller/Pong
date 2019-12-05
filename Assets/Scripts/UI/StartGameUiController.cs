@@ -3,7 +3,7 @@ using Assets.Scripts.Fsm;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StartGameUiController : MonoBehaviour
+public class StartGameUiController : BaseUiController
 {
     [SerializeField]
 #pragma warning disable 649

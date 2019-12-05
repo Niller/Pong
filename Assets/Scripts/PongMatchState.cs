@@ -9,6 +9,8 @@ public class PongMatchState : BaseState
 
     public override void Enter()
     {
+        ServiceLocator.Get<GuiManager>().Open(GuiViewType.Match, true);
+
         var difficult = (int) FsmManager.GetBlackboardValue("Difficult");
 
         _pongManager = ServiceLocator.Get<PongManager>();
@@ -23,6 +25,7 @@ public class PongMatchState : BaseState
     {
         _pongManager.Dispose();
         SignalBus.Invoke(new MatchStopSignal());
+        ServiceLocator.Get<GuiManager>().CloseAll();
     }
 
     public override void Execute(float deltaTime)
