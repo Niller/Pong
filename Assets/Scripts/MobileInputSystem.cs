@@ -12,7 +12,7 @@ public class MobileInputSystem : IInputSystem
         }
 
         var delta = Input.GetTouch(0).deltaPosition;
-        
-        SignalBus.Invoke(new MoveInputSignal((int)Mathf.Sign(delta.x), delta.x / Screen.width));
+
+        SignalBus.Invoke(new MoveInputSignal((int)Mathf.Sign(delta.x), Mathf.Abs(delta.x / Screen.width)));
     }
 }

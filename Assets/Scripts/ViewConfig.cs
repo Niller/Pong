@@ -3,9 +3,7 @@
 [CreateAssetMenu]
 public class ViewConfig : ScriptableObject
 {
-    public Vector2 PitchSize;
-    public float BottomBatPosition;
-    public float TopBatPosition;
+    public float PaddleYOffset;
 
     public GameObject BatView;
     public GameObject BallView;

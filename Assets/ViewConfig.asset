@@ -15,6 +15,7 @@ MonoBehaviour:
   PitchSize: {x: 17.777779, y: 9.4}
   BottomBatPosition: -4.7
   TopBatPosition: 4.7
+  PaddleYOffset: 0.3
   BatView: {fileID: 7899997524588195582, guid: a7da3df077a63a44287f0304b5cc0e97, type: 3}
   BallView: {fileID: 4365791858002946614, guid: 4dd5ebd32eac45e4fb20c60fe52ffb22,
     type: 3}
