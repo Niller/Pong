@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Signals;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class SettingsManager

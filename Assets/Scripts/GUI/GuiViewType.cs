@@ -5,5 +5,6 @@
     Settings,
     StartGame,
     Match,
-    MatchMenu
+    MatchMenu,
+    StartMultiplayerGame
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public static class ServiceLocator
 {
@@ -28,7 +29,14 @@ public static class ServiceLocator
         }
 
         throw new ArgumentException($"Cannot find service with type {type}");
-    } 
+    }
+
+    public static bool TryGet<T>(out T instance)
+    {
+        var result = Services.TryGetValue(typeof(T), out var instance1);
+        instance = (T) instance1;
+        return result;
+    }
 
     public static T Get<T>()
     {
