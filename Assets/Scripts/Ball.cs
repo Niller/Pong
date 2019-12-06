@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Net.Http.Headers;
+using Assets.Scripts;
+using Assets.Scripts.Signals;
+using UnityEngine;
 
-public class Ball
+public class Ball : PongObject
 {
     private readonly float _speedIncrement;
 
@@ -9,12 +12,6 @@ public class Ball
     private bool _postDeath;
 
     private readonly PongManager _pongManager;
-
-    public Vector2 Position
-    {
-        get;
-        private set;
-    }
 
     public Vector2 Direction
     {
@@ -43,10 +40,26 @@ public class Ball
         _pongManager = ServiceLocator.Get<PongManager>();
     }
 
+    public void Sync(Vector2 position, Vector2 direction, float speed)
+    {
+        Position = position;
+        Direction = direction;
+        Speed = speed;
+
+        SignalBus.Invoke(new BallPositionChangedSignal(this));
+    }
+
     public void Update(float deltaTime)
     {
+        if (!_pongManager.IsHost)
+        {
+            return;
+        }
+
         var deltaMove = Direction * deltaTime * Speed;
         Position += deltaMove;
+
+        SignalBus.Invoke(new BallPositionChangedSignal(this));
 
         if (_postDeath)
         {

@@ -55,7 +55,7 @@ public class Bootstrapper : MonoBehaviour
 
     private void InitializeNetworking()
     {
-        var go = Instantiate(_networkingGameGameObject);
+        var go = Instantiate(_networkingConnectGameObject);
         ServiceLocator.Register(go.GetComponent<NetworkConnectionManager>()).Initialize(_networkingGameGameObject);
     }
 }

@@ -17,7 +17,7 @@ public class BallView : PongObjectView
 
     public void Initialize(Ball ball, Vector2 pitchSize)
     {
-        base.Initialize(pitchSize);
+        base.Initialize(pitchSize, ball);
         _ball = ball;
 
         _viewTransform = _view.transform;
@@ -32,11 +32,18 @@ public class BallView : PongObjectView
         material.SetColor(_shaderColor2PropertyId, settingsManager.Config.BallColors[ballColors.Item2].Color);
 
         SignalBus.Subscribe<BallHitSignal>(OnBallHit);
+        SignalBus.Subscribe<BallPositionChangedSignal>(OnPositionChanged);
     }
 
     private void OnDestroy()
     {
         SignalBus.Unsubscribe<BallHitSignal>(OnBallHit);
+        SignalBus.Unsubscribe<BallPositionChangedSignal>(OnPositionChanged);
+    }
+
+    private void OnPositionChanged(BallPositionChangedSignal data)
+    {
+        NextPosition = _ball.Position.x * (PitchSize.x / 2f);
     }
 
     private void OnBallHit(BallHitSignal data)
@@ -44,13 +51,15 @@ public class BallView : PongObjectView
         _rotationSpeed = new Vector3(Random.value, Random.value, Random.value) * Random.Range(2, 5);
     }
 
-    private void Update()
+    protected override void Update()
     {
+        /*
         Transform.localPosition = new Vector3(
             _ball.Position.x * (PitchSize.x / 2f),
             _ball.Position.y * (PitchSize.y / 2f), 
             Transform.localPosition.z);
-
+            */
+        base.Update();
         _viewTransform.Rotate(_rotationSpeed);
     }
 }

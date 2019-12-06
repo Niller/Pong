@@ -27,3 +27,5 @@ MonoBehaviour:
     View: {fileID: 6267046050973522216, guid: 49624597bd547f148b7e1a6c150552b7, type: 3}
   - Type: 6
     View: {fileID: 1503753884019869697, guid: 2c587c885f7de3545b1d7b8b07f4339b, type: 3}
+  - Type: 7
+    View: {fileID: 6267046050973522216, guid: 94811e939dffe89438ac4b128fa83d0d, type: 3}

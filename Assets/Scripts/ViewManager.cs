@@ -36,12 +36,12 @@ public class ViewManager : MonoBehaviour
     {
         var paddle1GameObject = Instantiate(_config.BatView);
         var paddle1View = paddle1GameObject.GetComponent<PaddleView>();
-        paddle1View.Initialize(data.Arg1, _pitchSize, -_pitchSize.y / 2f);
+        paddle1View.Initialize(data.Arg1, _pitchSize);
         _views.Add(data.Arg1, paddle1GameObject);
 
         var paddle2GameObject = Instantiate(_config.BatView);
         var paddle2View = paddle2GameObject.GetComponent<PaddleView>();
-        paddle2View.Initialize(data.Arg2, _pitchSize, _pitchSize.y / 2f);
+        paddle2View.Initialize(data.Arg2, _pitchSize);
         _views.Add(data.Arg2, paddle2GameObject);
     }
 

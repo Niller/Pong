@@ -6,5 +6,6 @@
     StartGame,
     Match,
     MatchMenu,
-    StartMultiplayerGame
+    StartMultiplayerGame,
+    MultiplayerMatchMenu
 }

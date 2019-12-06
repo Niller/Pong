@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts;
 using Assets.Scripts.Signals;
+using Photon.Pun;
 using UnityEngine;
 
 public class PongManager
@@ -33,6 +34,8 @@ public class PongManager
         private set;
     }
 
+    public bool IsHost => !IsMultiplayer || PhotonNetwork.IsMasterClient;
+
     public int Score
     {
         get => _score;
@@ -40,6 +43,10 @@ public class PongManager
         {
             _score = value;
             SignalBus.Invoke(new ScoreChangedSignal(Score));
+            if (IsMultiplayer && IsHost)
+            {
+                ServiceLocator.Get<NetworkGameManager>().CallSyncScore(_score);
+            }
         }
     }
 
@@ -71,16 +78,29 @@ public class PongManager
             return false;
         }
 
+        if (!IsHost)
+        {
+            newDirection = ball.Direction;
+            return true;
+        }
+
         Score++;
 
         SignalBus.Invoke(new BallHitSignal());
         currentPaddle.OnBallHit(relativeIntersect);
         newDirection = new Vector2(relativeIntersect * BounceCoefficient, -ball.Direction.y).normalized;
+
+        //ServiceLocator.Get<NetworkGameManager>().CallSyncBall(Ball);
         return true;
     }
 
     public void SpawnBall()
     {
+        if (!IsHost)
+        {
+            return;
+        }
+
         Ball = new Ball(
             Vector2.zero,
             _gameDifficult.BallSize, 
@@ -88,10 +108,16 @@ public class PongManager
             _gameDifficult.BallSpeedIncrement);
 
         SignalBus.Invoke(new BallSpawnSignal(Ball));
+        
     }
 
     public void DespawnBall()
     {
+        if (!IsHost)
+        {
+            return;
+        }
+
         ServiceLocator.Get<SettingsManager>().TrySaveHighscore(Score);
         SignalBus.Invoke(new HighscoreChangedSignal(Score));
         Score = 0;
@@ -100,11 +126,33 @@ public class PongManager
         SpawnBall();
     }
 
+    public void SyncBall(Vector2 position, Vector2 direction, float speed)
+    {
+        if (Ball == null)
+        {
+            Ball = new Ball(
+                Vector2.zero,
+                _gameDifficult.BallSize,
+                _gameDifficult.InitialBallSpeed,
+                _gameDifficult.BallSpeedIncrement);
+
+            SignalBus.Invoke(new BallSpawnSignal(Ball));
+        }
+        Ball.Sync(position, direction, speed);
+    }
+
+    public void SyncScore(int score)
+    {
+        Score = score;
+    }
+
     public void Update(float deltaTime)
     {
-        Paddle1.Update(deltaTime);
-        Paddle2.Update(deltaTime);
-        Ball.Update(deltaTime);
+        Ball?.Update(deltaTime);
+        if (IsMultiplayer)
+        {
+            ServiceLocator.Get<NetworkGameManager>().CallSyncBall(Ball);
+        }
     }
 
     public void Dispose()

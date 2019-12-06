@@ -35,5 +35,11 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - PaddleInput
+  - CallSyncBall
+  - SyncBall
+  - CallSyncPaddle
+  - SyncPaddle
+  - CallSyncScore
+  - SyncScore
   DisableAutoOpenWizard: 1
   ShowSettings: 0

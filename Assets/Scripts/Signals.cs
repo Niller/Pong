@@ -37,6 +37,22 @@ namespace Assets.Scripts
         }
     }
 
+    public class PaddlePositionChangedSignal : Signal<Paddle>
+    {
+        public PaddlePositionChangedSignal(Paddle paddle) : base(paddle)
+        {
+
+        }
+    }
+
+    public class BallPositionChangedSignal : Signal<Ball>
+    {
+        public BallPositionChangedSignal(Ball ball) : base(ball)
+        {
+
+        }
+    }
+
     public class ScoreChangedSignal : Signal<int>
     {
         public ScoreChangedSignal(int newScore) : base(newScore)

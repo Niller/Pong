@@ -56,6 +56,8 @@ public class PongMatchUiController : BaseUiController
 
     public void OpenMenu()
     {
-        ServiceLocator.Get<GuiManager>().Open(GuiViewType.MatchMenu);
+        ServiceLocator.Get<GuiManager>().Open(ServiceLocator.Get<PongManager>().IsMultiplayer
+            ? GuiViewType.MultiplayerMatchMenu
+            : GuiViewType.MatchMenu);
     }
 }

@@ -61,4 +61,9 @@ public class StartMultiplayerGameUiController : BaseUiController
         _statusText.text = "Finding room...";
         _networkConnectionManager.GameReady += OnGameReady;
     }
+
+    public override void Back()
+    {
+        ServiceLocator.Get<NetworkConnectionManager>().Disconnect();
+    }
 }

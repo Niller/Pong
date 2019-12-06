@@ -1,7 +1,9 @@
 ﻿using System;
+using Assets.Scripts.Fsm;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using Object = System.Object;
 using Random = UnityEngine.Random;
 
 public class NetworkConnectionManager : MonoBehaviourPunCallbacks
@@ -17,7 +19,6 @@ public class NetworkConnectionManager : MonoBehaviourPunCallbacks
 
     public event Action ConnectedToMaster;
     public event Action GameReady;
-    public event Action Disconnected;
 
     public void Initialize(GameObject networkingGameGameObject)
     {
@@ -65,6 +66,11 @@ public class NetworkConnectionManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRandomRoom();
     }
 
+    public void Disconnect()
+    {
+        PhotonNetwork.Disconnect();
+    }
+
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
@@ -81,10 +87,10 @@ public class NetworkConnectionManager : MonoBehaviourPunCallbacks
     {
         base.OnDisconnected(cause);
         ConnectingToMaster = false;
-        PhotonNetwork.Destroy(_networkingInstance);
+        Destroy(_networkingInstance);
         _networkingInstance = null;
         Debug.Log(cause);
-        Disconnected?.Invoke();
+        ServiceLocator.Get<FsmManager>().GoToState<GuiState>();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
