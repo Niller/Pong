@@ -1,21 +1,21 @@
 ﻿using Assets.Scripts;
 using Assets.Scripts.Fsm;
 using Assets.Scripts.Signals;
-using UnityEngine;
 
-public class PongMatchState : BaseState
+public class PongMultiplayerState : BaseState
 {
     private PongManager _pongManager;
+    private IInputSystem _inputSystem;
 
     public override void Enter()
     {
+        _inputSystem = ServiceLocator.Get<IInputSystem>();
         ServiceLocator.Get<GuiManager>().Open(GuiViewType.Match, true);
 
-        var difficult = (int) FsmManager.GetBlackboardValue("Difficult");
-        var multiplayer = (bool)FsmManager.GetBlackboardValue("Multiplayer");
+        var difficult = (int)FsmManager.GetBlackboardValue("Difficult");
 
-        _pongManager = ServiceLocator.Get<PongManager>();
-        _pongManager.Initialize(ServiceLocator.Get<SettingsManager>().Config.Difficulties[difficult], multiplayer);
+        _pongManager = ServiceLocator.Register<PongManager>(new PongMultiplayerManager());
+        _pongManager.Initialize(ServiceLocator.Get<SettingsManager>().Config.Difficulties[difficult]);
         _pongManager.SpawnPaddles();
         _pongManager.SpawnBall();
 
@@ -31,6 +31,7 @@ public class PongMatchState : BaseState
 
     public override void Execute(float deltaTime)
     {
+        _inputSystem.Update(deltaTime);
         _pongManager.Update(deltaTime);
     }
 }

@@ -18,6 +18,6 @@ public class StartGameUiController : BaseUiController
         fsmManager.SetBlackboardValue("Difficult", _difficultToggleGroup.ActiveToggles().First().transform.GetSiblingIndex());
         fsmManager.SetBlackboardValue("Multiplayer", false);
 
-        fsmManager.GoToState<PongMatchState>();
+        fsmManager.GoToState<PongState>();
     }
 }

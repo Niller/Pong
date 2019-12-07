@@ -1,7 +1,7 @@
 ﻿public enum GuiViewType
 {
-    Main,
-    MainBackground,
+    MainMenu,
+    MainMenuFullscreen,
     Settings,
     StartGame,
     Match,

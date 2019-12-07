@@ -11,7 +11,7 @@ public class Ball : PongObject
     private float _postDeathFlyLength = 0.5f;
     private bool _postDeath;
 
-    private readonly PongManager _pongManager;
+    protected readonly PongManager PongManager;
 
     public Vector2 Direction
     {
@@ -37,7 +37,7 @@ public class Ball : PongObject
         Speed = speed;
         _speedIncrement = speedIncrement;
         Direction = Random.insideUnitCircle.normalized;
-        _pongManager = ServiceLocator.Get<PongManager>();
+        PongManager = ServiceLocator.Get<PongManager>();
     }
 
     public void Sync(Vector2 position, Vector2 direction, float speed)
@@ -49,13 +49,8 @@ public class Ball : PongObject
         SignalBus.Invoke(new BallPositionChangedSignal(this));
     }
 
-    public void Update(float deltaTime)
+    public virtual void Update(float deltaTime)
     {
-        if (!_pongManager.IsHost)
-        {
-            return;
-        }
-
         var deltaMove = Direction * deltaTime * Speed;
         Position += deltaMove;
 
@@ -67,7 +62,7 @@ public class Ball : PongObject
 
             if (_postDeathFlyLength < 0)
             {
-                _pongManager.DespawnBall();
+                PongManager.DespawnBall();
             }
             return;
         }
@@ -81,7 +76,7 @@ public class Ball : PongObject
         //Paddle collision
         if (Position.y >= 1 - Size || Position.y <= -1 + Size)
         {
-            if (!_pongManager.CheckCollision(this, out var newDirection))
+            if (!PongManager.HandleCollision(this, out var newDirection))
             {
                 _postDeath = true;
             }

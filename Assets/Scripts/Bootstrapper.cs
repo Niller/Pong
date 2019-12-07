@@ -35,7 +35,6 @@ public class Bootstrapper : MonoBehaviour
 #endif
 
         ServiceLocator.Register(new GuiManager()).Initialize(_guiConfig, _guiRoot);
-        ServiceLocator.Register(new PongManager());
         ServiceLocator.Register(new SettingsManager()).Initialize(_gameConfig);
 
         InitializeNetworking();
@@ -45,10 +44,11 @@ public class Bootstrapper : MonoBehaviour
         var viewManager = gameObject.AddComponent<ViewManager>();
         viewManager.Initialize(_viewConfig);
 
-        fsmManager.AddState<GuiState>();
-        fsmManager.AddState<PongMatchState>();
+        fsmManager.AddState<MainMenuState>();
+        fsmManager.AddState<PongState>();
+        fsmManager.AddState<PongMultiplayerState>();
         
-        fsmManager.GoToState<GuiState>();
+        fsmManager.GoToState<MainMenuState>();
 
         Destroy(this);
     }

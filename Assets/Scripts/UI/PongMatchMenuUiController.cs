@@ -17,12 +17,12 @@ public class PongMatchMenuUiController : BaseUiController
     public void QuitMatch()
     {
         ResumeMatch();
-        ServiceLocator.Get<FsmManager>().GoToState<GuiState>();
+        ServiceLocator.Get<FsmManager>().GoToState<MainMenuState>();
     }
 
     public void RestartMatch()
     {
         ResumeMatch();
-        ServiceLocator.Get<FsmManager>().GoToState<PongMatchState>();
+        ServiceLocator.Get<FsmManager>().GoToState<PongState>();
     }
 }

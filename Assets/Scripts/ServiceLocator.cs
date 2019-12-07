@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 
 public static class ServiceLocator
 {
@@ -13,6 +14,10 @@ public static class ServiceLocator
 
     public static object Register(Type type, object instance)
     {
+        if (Services.TryGetValue(type, out var oldInstance) && oldInstance is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
         return Services[type] = instance;
     }
 
@@ -41,5 +46,16 @@ public static class ServiceLocator
     public static T Get<T>()
     {
         return (T) Get(typeof(T));
+    }
+
+    public static void Remove<T>()
+    {
+        var type = typeof(T);
+        if (Services.TryGetValue(type, out var instance) && instance is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
+
+        Services.Remove(type);
     }
 }

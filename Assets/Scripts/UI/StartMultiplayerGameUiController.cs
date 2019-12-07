@@ -40,8 +40,7 @@ public class StartMultiplayerGameUiController : BaseUiController
     {
         var fsmManager = ServiceLocator.Get<FsmManager>();
         fsmManager.SetBlackboardValue("Difficult", 1);
-        fsmManager.SetBlackboardValue("Multiplayer", true);
-        fsmManager.GoToState<PongMatchState>();
+        fsmManager.GoToState<PongMultiplayerState>();
     }
 
     public void Host()

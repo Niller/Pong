@@ -88,9 +88,10 @@ public class NetworkConnectionManager : MonoBehaviourPunCallbacks
         base.OnDisconnected(cause);
         ConnectingToMaster = false;
         Destroy(_networkingInstance);
+        ServiceLocator.Remove<NetworkGameManager>();
         _networkingInstance = null;
         Debug.Log(cause);
-        ServiceLocator.Get<FsmManager>().GoToState<GuiState>();
+        ServiceLocator.Get<FsmManager>().GoToState<MainMenuState>();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -109,7 +110,7 @@ public class NetworkConnectionManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             _networkingInstance = PhotonNetwork.Instantiate(_networkingGameObject.name, Vector3.zero, Quaternion.identity);
-            ServiceLocator.Register(_networkingInstance.AddComponent<NetworkGameManager>());
+            ServiceLocator.Register(_networkingInstance.GetComponent<NetworkGameManager>());
             GameReady?.Invoke();
         }
     }
