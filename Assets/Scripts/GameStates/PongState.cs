@@ -1,38 +1,46 @@
-﻿using Assets.Scripts;
-using Assets.Scripts.Fsm;
+﻿using Assets.Scripts.Framework.Fsm;
+using Assets.Scripts.GUI;
+using Assets.Scripts.Input;
 using Assets.Scripts.Signals;
-using UnityEngine;
 
-public class PongState : BaseState
+namespace Assets.Scripts.GameStates
 {
-    private PongManager _pongManager;
-    private IInputSystem _inputSystem;
-
-    public override void Enter()
+    public class PongState : BaseState
     {
-        _inputSystem = ServiceLocator.Get<IInputSystem>();
-        ServiceLocator.Get<GuiManager>().Open(GuiViewType.Match, true);
+        private PongManager _pongManager;
+        private IInputSystem _inputSystem;
 
-        var difficult = (int) FsmManager.GetBlackboardValue("Difficult");
+        protected virtual PongManager CreatePongManager()
+        {
+            return ServiceLocator.Register(new PongManager());
+        }
 
-        _pongManager = ServiceLocator.Register(new PongManager());
-        _pongManager.Initialize(ServiceLocator.Get<SettingsManager>().Config.Difficulties[difficult]);
-        _pongManager.SpawnPaddles();
-        _pongManager.SpawnBall();
+        public override void Enter()
+        {
+            _inputSystem = ServiceLocator.Get<IInputSystem>();
+            ServiceLocator.Get<GuiManager>().Open(GuiViewType.Match, true);
 
-        SignalBus.Invoke(new GameStartedSignal(_pongManager.Paddle1, _pongManager.Paddle2));
-    }
+            var difficult = (int) FsmManager.GetBlackboardValue("Difficult");
 
-    public override void Exit()
-    {
-        _pongManager.Dispose();
-        SignalBus.Invoke(new MatchStopSignal());
-        ServiceLocator.Get<GuiManager>().CloseAll();
-    }
+            _pongManager = CreatePongManager();
+            _pongManager.Initialize(ServiceLocator.Get<SettingsManager>().Config.Difficulties[difficult]);
+            _pongManager.SpawnPaddles();
+            _pongManager.SpawnBall();
 
-    public override void Execute(float deltaTime)
-    {
-        _inputSystem.Update(deltaTime);
-        _pongManager.Update(deltaTime);
+            SignalBus.Invoke(new GameStartedSignal(_pongManager.Paddle1, _pongManager.Paddle2));
+        }
+
+        public override void Exit()
+        {
+            _pongManager.Dispose();
+            SignalBus.Invoke(new MatchStopSignal());
+            ServiceLocator.Get<GuiManager>().CloseAll();
+        }
+
+        public override void Execute(float deltaTime)
+        {
+            _inputSystem.Update(deltaTime);
+            _pongManager.Update(deltaTime);
+        }
     }
 }

@@ -1,12 +1,11 @@
-﻿
-using System;
-using Assets.Scripts;
+﻿using Assets.Scripts;
 using Assets.Scripts.Signals;
-using Photon.Pun;
 using UnityEngine;
 
 public class Paddle : PongObject
 {
+    private const float DefaultLength = 0.2f;
+
     public float Length
     {
         get;
@@ -21,7 +20,7 @@ public class Paddle : PongObject
     {
         Index = index;
         Position = startPosition;
-        Length = 0.2f;
+        Length = DefaultLength;
         SignalBus.Subscribe<MoveInputSignal>(OnMoveInput);
     }
 
@@ -36,7 +35,4 @@ public class Paddle : PongObject
         SignalBus.Invoke(new PaddlePositionChangedSignal(this));
     }
 
-    public void OnBallHit(float relativeHitPosition)
-    {
-    }
 }

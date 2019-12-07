@@ -1,11 +1,14 @@
-﻿public enum GuiViewType
+﻿namespace Assets.Scripts.GUI
 {
-    MainMenu,
-    MainMenuFullscreen,
-    Settings,
-    StartGame,
-    Match,
-    MatchMenu,
-    StartMultiplayerGame,
-    MultiplayerMatchMenu
+    public enum GuiViewType
+    {
+        MainMenu,
+        MainMenuFullscreen,
+        Settings,
+        StartGame,
+        Match,
+        MatchMenu,
+        StartMultiplayerGame,
+        MultiplayerMatchMenu
+    }
 }

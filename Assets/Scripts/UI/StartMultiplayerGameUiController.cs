@@ -1,5 +1,6 @@
-﻿using Assets.Scripts.Fsm;
-using Photon.Pun;
+﻿using Assets.Scripts.Framework.Fsm;
+using Assets.Scripts.GameStates;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,6 +44,7 @@ public class StartMultiplayerGameUiController : BaseUiController
         fsmManager.GoToState<PongMultiplayerState>();
     }
 
+    [UsedImplicitly]
     public void Host()
     {
         _buttons.SetActive(false);
@@ -52,6 +54,7 @@ public class StartMultiplayerGameUiController : BaseUiController
         _networkConnectionManager.GameReady += OnGameReady;
     }
 
+    [UsedImplicitly]
     public void Join()
     {
         _buttons.SetActive(false);
@@ -61,6 +64,7 @@ public class StartMultiplayerGameUiController : BaseUiController
         _networkConnectionManager.GameReady += OnGameReady;
     }
 
+    [UsedImplicitly]
     public override void Back()
     {
         ServiceLocator.Get<NetworkConnectionManager>().Disconnect();

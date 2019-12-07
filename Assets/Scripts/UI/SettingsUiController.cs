@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingsUiController : BaseUiController
@@ -35,6 +36,7 @@ public class SettingsUiController : BaseUiController
         }
     }
 
+    [UsedImplicitly]
     public void SaveSettings()
     {
         _settingsManager.SaveBallColor(_color1Dropdown.value, _color2Dropdown.value);

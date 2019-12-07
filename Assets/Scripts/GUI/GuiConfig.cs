@@ -1,28 +1,31 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class GuiConfig : ScriptableObject, ISerializationCallbackReceiver
+namespace Assets.Scripts.GUI
 {
-    public GuiConfigItem[] Items;
-    public Dictionary<GuiViewType, GuiConfigItem> ItemsDictionary;
-    public void OnBeforeSerialize()
+    [CreateAssetMenu]
+    public class GuiConfig : ScriptableObject, ISerializationCallbackReceiver
     {
-        
-    }
-
-    public void OnAfterDeserialize()
-    {
-        if (Items == null)
+        public GuiConfigItem[] Items;
+        public Dictionary<GuiViewType, GuiConfigItem> ItemsDictionary;
+        public void OnBeforeSerialize()
         {
-            return;
+        
         }
 
-        ItemsDictionary = new Dictionary<GuiViewType, GuiConfigItem>();
-
-        foreach (var guiConfigItem in Items)
+        public void OnAfterDeserialize()
         {
-            ItemsDictionary[guiConfigItem.Type] = guiConfigItem;
+            if (Items == null)
+            {
+                return;
+            }
+
+            ItemsDictionary = new Dictionary<GuiViewType, GuiConfigItem>();
+
+            foreach (var guiConfigItem in Items)
+            {
+                ItemsDictionary[guiConfigItem.Type] = guiConfigItem;
+            }
         }
     }
 }

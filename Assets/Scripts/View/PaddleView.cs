@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Scripts;
+﻿using Assets.Scripts;
 using Assets.Scripts.Signals;
 using UnityEngine;
 
@@ -8,8 +7,10 @@ public class PaddleView : PongObjectView
     private Paddle _paddle;
     private PaddleTiltTweener _tiltTweener;
 
+#pragma warning disable 649
     [SerializeField]
     private GameObject _view;
+#pragma warning restore 649
 
     public void Initialize(Paddle paddle, Vector2 pitchSize)
     {

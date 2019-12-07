@@ -6,8 +6,11 @@ public class BallView : PongObjectView
 {
     private Ball _ball;
 
+
+#pragma warning disable 649
     [SerializeField]
     private GameObject _view;
+#pragma warning restore 649
 
     private Vector3 _rotationSpeed;
     private Transform _viewTransform;

@@ -1,19 +1,23 @@
-﻿using Assets.Scripts.Fsm;
+﻿using Assets.Scripts.Framework.Fsm;
+using Assets.Scripts.GUI;
 
-public class MainMenuState : BaseState
+namespace Assets.Scripts.GameStates
 {
-    public override void Enter()
+    public class MainMenuState : BaseState
     {
-        ServiceLocator.Get<GuiManager>().Open(GuiViewType.MainMenuFullscreen, true);
-        ServiceLocator.Get<GuiManager>().Open(GuiViewType.MainMenu);
-    }
+        public override void Enter()
+        {
+            ServiceLocator.Get<GuiManager>().Open(GuiViewType.MainMenuFullscreen, true);
+            ServiceLocator.Get<GuiManager>().Open(GuiViewType.MainMenu);
+        }
 
-    public override void Exit()
-    {
-        ServiceLocator.Get<GuiManager>().CloseAll();
-    }
+        public override void Exit()
+        {
+            ServiceLocator.Get<GuiManager>().CloseAll();
+        }
 
-    public override void Execute(float deltaTime)
-    {
+        public override void Execute(float deltaTime)
+        {
+        }
     }
 }

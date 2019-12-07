@@ -5,8 +5,15 @@ using UnityEngine;
 
 public class PongMultiplayerManager : PongManager
 {
+    private NetworkGameManager _networkGameManager;
     public override bool IsMultiplayer => true;
     public bool IsHost => PhotonNetwork.IsMasterClient;
+
+    public override void Initialize(GameDifficult gameDifficult)
+    {
+        _networkGameManager = ServiceLocator.Get<NetworkGameManager>();
+        base.Initialize(gameDifficult);
+    }
 
     public override bool HandleCollision(Ball ball, out Vector2 newDirection)
     {
@@ -25,7 +32,7 @@ public class PongMultiplayerManager : PongManager
         var result = base.HandleCollision(ball, out newDirection);
         if (result)
         {
-            ServiceLocator.Get<NetworkGameManager>().CallPaddleHitBall(currentPaddle.Index, relativeIntersect);
+            _networkGameManager.CallPaddleHitBall(currentPaddle.Index, relativeIntersect);
         }
         return result;
     }
@@ -75,7 +82,7 @@ public class PongMultiplayerManager : PongManager
         base.Update(deltaTime);
         if (IsHost)
         {
-            ServiceLocator.Get<NetworkGameManager>().CallSyncBall(Ball);
+            _networkGameManager.CallSyncBall(Ball);
         }
     }
 
@@ -85,7 +92,7 @@ public class PongMultiplayerManager : PongManager
         base.SetScore(value);
         if (IsHost)
         {
-            ServiceLocator.Get<NetworkGameManager>().CallSyncScore(value);
+            _networkGameManager.CallSyncScore(value);
         }
     }
 

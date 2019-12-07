@@ -1,5 +1,7 @@
-﻿using Assets.Scripts.Fsm;
-using Photon.Pun;
+﻿using Assets.Scripts.Framework.Fsm;
+using Assets.Scripts.GameStates;
+using Assets.Scripts.GUI;
+using Assets.Scripts.Input;
 using UnityEngine;
 
 public class Bootstrapper : MonoBehaviour

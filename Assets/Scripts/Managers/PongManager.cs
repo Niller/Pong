@@ -7,6 +7,8 @@ public class PongManager : IDisposable
 {
     private const float BounceCoefficient = 0.5f;
 
+    private SettingsManager _settingsManager;
+
     protected GameDifficult GameDifficult;
 
     public Paddle Paddle1
@@ -35,8 +37,10 @@ public class PongManager : IDisposable
         protected set;
     }
 
-    public void Initialize(GameDifficult gameDifficult)
+
+    public virtual void Initialize(GameDifficult gameDifficult)
     {
+        _settingsManager = ServiceLocator.Get<SettingsManager>();
         SetScore(0);
         GameDifficult = gameDifficult;
     }
@@ -77,7 +81,7 @@ public class PongManager : IDisposable
 
     public virtual void DespawnBall()
     {
-        ServiceLocator.Get<SettingsManager>().TrySaveHighscore(Score);
+        _settingsManager.TrySaveHighscore(Score);
         SignalBus.Invoke(new HighscoreChangedSignal(Score));
         SetScore(0);
 

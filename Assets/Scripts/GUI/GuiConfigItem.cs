@@ -1,9 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
-public struct GuiConfigItem
+namespace Assets.Scripts.GUI
 {
-    public GuiViewType Type;
-    public GameObject View;
+    [Serializable]
+    public struct GuiConfigItem
+    {
+        public GuiViewType Type;
+        public GameObject View;
+    }
 }

@@ -4,6 +4,10 @@ using Vector3 = UnityEngine.Vector3;
 
 public abstract class PongObjectView : MonoBehaviour
 {
+    private int _lerpFrameCount = 3;
+    private int _currentFrameCount;
+    private Vector2? _previousNextPosition;
+
     protected Transform Transform;
     protected Vector2 PitchSize;
 
@@ -18,11 +22,6 @@ public abstract class PongObjectView : MonoBehaviour
             _currentFrameCount = 0;
         }
     }
-
-    private int _lerpFrameCount = 3;
-    private int _currentFrameCount = 0;
-    private Vector2? _previousNextPosition;
-
 
     public void Initialize(Vector2 pitchSize, PongObject pongObject)
     {

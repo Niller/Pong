@@ -5,10 +5,12 @@ using UnityEngine;
 public class PaddleMultiplayer : Paddle
 {
     private readonly PongMultiplayerManager _pongMultiplayerManager;
+    private NetworkGameManager _networkGameManager;
 
     public PaddleMultiplayer(int index, Vector2 startPosition) : base(index, startPosition)
     {
         _pongMultiplayerManager = (PongMultiplayerManager) ServiceLocator.Get<PongManager>();
+        _networkGameManager = ServiceLocator.Get<NetworkGameManager>();
     }
 
     public void Sync(float pos)
@@ -33,7 +35,7 @@ public class PaddleMultiplayer : Paddle
 
         if (_pongMultiplayerManager.IsHost && Index == 1)
         {
-            ServiceLocator.Get<NetworkGameManager>().CallSyncPaddle(this);
+            _networkGameManager.CallSyncPaddle(this);
         }
     }
 }

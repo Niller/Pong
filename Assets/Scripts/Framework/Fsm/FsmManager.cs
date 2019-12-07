@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.Fsm
+namespace Assets.Scripts.Framework.Fsm
 {
     public class FsmManager : IDisposable
     {

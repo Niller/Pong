@@ -1,9 +1,9 @@
 ﻿using System;
-using Assets.Scripts.Fsm;
+using Assets.Scripts.Framework.Fsm;
+using Assets.Scripts.GameStates;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using Object = System.Object;
 using Random = UnityEngine.Random;
 
 public class NetworkConnectionManager : MonoBehaviourPunCallbacks

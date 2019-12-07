@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 
-public interface IGuiController
+namespace Assets.Scripts.GUI
 {
-    GameObject Root { get; }
+    public interface IGuiController
+    {
+        GameObject Root
+        {
+            get;
+        }
+    }
 }

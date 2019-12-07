@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Fsm
+﻿namespace Assets.Scripts.Framework.Fsm
 {
     public interface IState
     {

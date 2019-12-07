@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Fsm;
+﻿using Assets.Scripts.Framework.Fsm;
 using UnityEngine;
 
 public class ApplicationManager : MonoBehaviour

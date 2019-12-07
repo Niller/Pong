@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Signals;
-using JetBrains.Annotations;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SettingsManager
 {

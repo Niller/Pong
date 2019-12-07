@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts;
+using Assets.Scripts.GUI;
 using Assets.Scripts.Signals;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,6 +56,7 @@ public class PongMatchUiController : BaseUiController
         _maxScoreText.text = ServiceLocator.Get<SettingsManager>().LoadHighscore().ToString();
     }
 
+    [UsedImplicitly]
     public void OpenMenu()
     {
         ServiceLocator.Get<GuiManager>().Open(ServiceLocator.Get<PongManager>().IsMultiplayer

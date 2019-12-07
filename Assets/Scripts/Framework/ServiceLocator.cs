@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor;
 
 public static class ServiceLocator
 {

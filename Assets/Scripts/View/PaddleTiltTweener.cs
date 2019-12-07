@@ -3,16 +3,19 @@ using UnityEngine;
 
 public class PaddleTiltTweener : MonoBehaviour
 {
+#pragma warning disable 649
     [SerializeField]
     private float _maxAngle;
     [SerializeField]
     private float _time;
     [SerializeField]
     private AnimationCurve _curve;
+#pragma warning restore 649
 
     private Coroutine _currentCoroutine;
     private Transform _transform;
     private float _currentTime;
+
     private void Awake()
     {
         _transform = transform;
