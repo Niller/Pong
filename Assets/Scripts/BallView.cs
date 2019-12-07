@@ -43,7 +43,9 @@ public class BallView : PongObjectView
 
     private void OnPositionChanged(BallPositionChangedSignal data)
     {
-        NextPosition = _ball.Position.x * (PitchSize.x / 2f);
+        NextPosition = new Vector2(
+            _ball.Position.x * (PitchSize.x / 2f),
+            _ball.Position.y * (PitchSize.y / 2f));
     }
 
     private void OnBallHit(BallHitSignal data)
@@ -53,12 +55,6 @@ public class BallView : PongObjectView
 
     protected override void Update()
     {
-        /*
-        Transform.localPosition = new Vector3(
-            _ball.Position.x * (PitchSize.x / 2f),
-            _ball.Position.y * (PitchSize.y / 2f), 
-            Transform.localPosition.z);
-            */
         base.Update();
         _viewTransform.Rotate(_rotationSpeed);
     }

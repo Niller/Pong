@@ -12,9 +12,10 @@ public class Paddle : PongObject
         get;
     }
 
-    public event Action<float> BallHit;
-
-    protected readonly int Index;
+    public int Index
+    {
+        get;
+    }
 
     public Paddle(int index, Vector2 startPosition)
     {
@@ -37,12 +38,5 @@ public class Paddle : PongObject
 
     public void OnBallHit(float relativeHitPosition)
     {
-        BallHit?.Invoke(relativeHitPosition);
-    }
-
-    public void Sync(float pos)
-    {
-        Position = new Vector2(pos, Position.y);
-        SignalBus.Invoke(new PaddlePositionChangedSignal(this));
     }
 }

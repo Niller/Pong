@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MobileInputSystem : IInputSystem
 {
+    private const float Speed = 1.5f;
+
     public void Update(float deltaTime)
     {
         if (Input.touchCount <= 0)
@@ -13,7 +15,7 @@ public class MobileInputSystem : IInputSystem
 
         var delta = Input.GetTouch(0).deltaPosition;
         var direction = (int) Mathf.Sign(delta.x);
-        var force = Mathf.Abs(delta.x / Screen.width);
+        var force = Mathf.Abs(delta.x / Screen.width) * Speed;
         SignalBus.Invoke(new MoveInputSignal(0, direction, force));
         if (!ServiceLocator.Get<PongManager>().IsMultiplayer)
         {

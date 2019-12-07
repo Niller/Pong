@@ -57,8 +57,7 @@ public class PongManager : IDisposable
 
         SetScore(Score + 1);
 
-        SignalBus.Invoke(new BallHitSignal());
-        currentPaddle.OnBallHit(relativeIntersect);
+        SignalBus.Invoke(new BallHitSignal(currentPaddle.Index, relativeIntersect));
         newDirection = new Vector2(relativeIntersect * BounceCoefficient, -ball.Direction.y).normalized;
 
         return true;
@@ -86,33 +85,9 @@ public class PongManager : IDisposable
         SpawnBall();
     }
 
-    public void SyncBall(Vector2 position, Vector2 direction, float speed)
-    {
-        if (Ball == null)
-        {
-            Ball = new Ball(
-                Vector2.zero,
-                GameDifficult.BallSize,
-                GameDifficult.InitialBallSpeed,
-                GameDifficult.BallSpeedIncrement);
-
-            SignalBus.Invoke(new BallSpawnSignal(Ball));
-        }
-        Ball.Sync(position, direction, speed);
-    }
-
-    public void SyncScore(int score)
-    {
-        SetScore(score);
-    }
-
-    public void Update(float deltaTime)
+    public virtual void Update(float deltaTime)
     {
         Ball?.Update(deltaTime);
-        if (IsMultiplayer)
-        {
-            ServiceLocator.Get<NetworkGameManager>().CallSyncBall(Ball);
-        }
     }
 
     public void Dispose()

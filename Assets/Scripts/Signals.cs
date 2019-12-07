@@ -16,9 +16,9 @@ namespace Assets.Scripts
         }
     }
 
-    public class BallHitSignal : Signal
+    public class BallHitSignal : Signal<int, float>
     {
-        public BallHitSignal() : base()
+        public BallHitSignal(int index, float point) : base(index, point)
         {
         }
     }
@@ -73,4 +73,5 @@ namespace Assets.Scripts
         {
         }
     }
+
 }

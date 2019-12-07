@@ -14,19 +14,25 @@ public class NetworkGameManager : MonoBehaviour
     [PunRPC]
     private void SyncBall(Vector2 position, Vector2 direction, float speed)
     {
-        ServiceLocator.Get<PongManager>().SyncBall(position, direction, speed);
+        ((PongMultiplayerManager)ServiceLocator.Get<PongManager>()).SyncBall(position, direction, speed);
     }
 
     [PunRPC]
     private void SyncPaddle(float position)
     {
-        ServiceLocator.Get<PongManager>().Paddle1.Sync(position);
+        ((PaddleMultiplayer)ServiceLocator.Get<PongManager>().Paddle1).Sync(position);
     }
 
     [PunRPC]
     private void SyncScore(int score)
     {
-        ServiceLocator.Get<PongManager>().SyncScore(score);
+        ((PongMultiplayerManager)ServiceLocator.Get<PongManager>()).SyncScore(score);
+    }
+
+    [PunRPC]
+    private void PaddleHitBall(int index, float point)
+    {
+        SignalBus.Invoke(new BallHitSignal(index, point));
     }
 
 
@@ -36,30 +42,23 @@ public class NetworkGameManager : MonoBehaviour
         
     }
 
-    [PunRPC]
     public void CallSyncBall(Ball ball)
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonView.Get(this).RPC("SyncBall", RpcTarget.Others, ball.Position * new Vector2(1, -1), ball.Direction, ball.Speed);
-        }
+        PhotonView.Get(this).RPC("SyncBall", RpcTarget.Others, ball.Position * new Vector2(1, -1), ball.Direction, ball.Speed);
     }
 
-    [PunRPC]
     public void CallSyncScore(int score)
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonView.Get(this).RPC("SyncScore", RpcTarget.Others, score);
-        }
+        PhotonView.Get(this).RPC("SyncScore", RpcTarget.Others, score);
     }
 
-    [PunRPC]
     public void CallSyncPaddle(Paddle paddle)
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonView.Get(this).RPC("SyncPaddle", RpcTarget.Others, paddle.Position.x);
-        }
+        PhotonView.Get(this).RPC("SyncPaddle", RpcTarget.Others, paddle.Position.x);
+    }
+
+    public void CallPaddleHitBall(int index, float point)
+    {
+        PhotonView.Get(this).RPC("PaddleHitBall", RpcTarget.Others, index == 0 ? 1 : 0, point);
     }
 }

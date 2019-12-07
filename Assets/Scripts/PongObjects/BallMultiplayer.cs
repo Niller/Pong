@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts;
+using Assets.Scripts.Signals;
+using UnityEngine;
 
 public class BallMultiplayer : Ball
 {
@@ -19,4 +21,14 @@ public class BallMultiplayer : Ball
 
         base.Update(deltaTime);
     }
+
+    public void Sync(Vector2 position, Vector2 direction, float speed)
+    {
+        Position = position;
+        Direction = direction;
+        Speed = speed;
+
+        SignalBus.Invoke(new BallPositionChangedSignal(this));
+    }
+
 }

@@ -41,5 +41,6 @@ MonoBehaviour:
   - SyncPaddle
   - CallSyncScore
   - SyncScore
+  - PaddleHitBall
   DisableAutoOpenWizard: 1
   ShowSettings: 0

@@ -12,7 +12,7 @@ public class PongMultiplayerManager : PongManager
     {
         newDirection = ball.Direction;
 
-        if (!CheckCollision(ball, out _, out _))
+        if (!CheckCollision(ball, out var relativeIntersect, out var currentPaddle))
         {
             return false;
         }
@@ -22,7 +22,12 @@ public class PongMultiplayerManager : PongManager
             return true;
         }
 
-        return base.HandleCollision(ball, out newDirection);
+        var result = base.HandleCollision(ball, out newDirection);
+        if (result)
+        {
+            ServiceLocator.Get<NetworkGameManager>().CallPaddleHitBall(currentPaddle.Index, relativeIntersect);
+        }
+        return result;
     }
 
     public override void SpawnPaddles()
@@ -38,13 +43,7 @@ public class PongMultiplayerManager : PongManager
             return;
         }
 
-        Ball = new BallMultiplayer(
-            Vector2.zero,
-            GameDifficult.BallSize,
-            GameDifficult.InitialBallSpeed,
-            GameDifficult.BallSpeedIncrement);
-
-        SignalBus.Invoke(new BallSpawnSignal(Ball));
+        SpawnBallInternal();
     }
 
     public override void DespawnBall()
@@ -57,12 +56,47 @@ public class PongMultiplayerManager : PongManager
         base.DespawnBall();
     }
 
+    public void SyncBall(Vector2 position, Vector2 direction, float speed)
+    {
+        if (Ball == null)
+        {
+            SpawnBallInternal();
+        }
+        ((BallMultiplayer)Ball).Sync(position, direction, speed);
+    }
+
+    public void SyncScore(int score)
+    {
+        SetScore(score);
+    }
+
+    public override void Update(float deltaTime)
+    {
+        base.Update(deltaTime);
+        if (IsHost)
+        {
+            ServiceLocator.Get<NetworkGameManager>().CallSyncBall(Ball);
+        }
+    }
+
+
     protected override void SetScore(int value)
     {
         base.SetScore(value);
-        if (IsMultiplayer && IsHost)
+        if (IsHost)
         {
             ServiceLocator.Get<NetworkGameManager>().CallSyncScore(value);
         }
+    }
+
+    private void SpawnBallInternal()
+    {
+        Ball = new BallMultiplayer(
+            Vector2.zero,
+            GameDifficult.BallSize,
+            GameDifficult.InitialBallSpeed,
+            GameDifficult.BallSpeedIncrement);
+
+        SignalBus.Invoke(new BallSpawnSignal(Ball));
     }
 }

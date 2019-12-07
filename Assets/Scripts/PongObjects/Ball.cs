@@ -16,13 +16,13 @@ public class Ball : PongObject
     public Vector2 Direction
     {
         get;
-        private set;
+        protected set;
     }
 
     public float Speed
     {
         get;
-        private set;
+        protected set;
     }
 
     public float Size
@@ -38,15 +38,6 @@ public class Ball : PongObject
         _speedIncrement = speedIncrement;
         Direction = Random.insideUnitCircle.normalized;
         PongManager = ServiceLocator.Get<PongManager>();
-    }
-
-    public void Sync(Vector2 position, Vector2 direction, float speed)
-    {
-        Position = position;
-        Direction = direction;
-        Speed = speed;
-
-        SignalBus.Invoke(new BallPositionChangedSignal(this));
     }
 
     public virtual void Update(float deltaTime)

@@ -1,42 +1,58 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public abstract class PongObjectView : MonoBehaviour
 {
     protected Transform Transform;
     protected Vector2 PitchSize;
-    protected float? NextPosition;
-    private float _lerpDelta = 0.1f;
-    private PongObject _pongObject;
+
+    private Vector2 _nextPosition;
+    protected Vector2 NextPosition
+    {
+        get => _nextPosition;
+        set
+        {
+            _previousNextPosition = _nextPosition;
+            _nextPosition = value;
+            _currentFrameCount = 0;
+        }
+    }
+
+    private int _lerpFrameCount = 3;
+    private int _currentFrameCount = 0;
+    private Vector2? _previousNextPosition;
+
 
     public void Initialize(Vector2 pitchSize, PongObject pongObject)
     {
         PitchSize = pitchSize;
         Transform = transform;
-        _pongObject = pongObject;
     }
 
     protected virtual void Update()
     {
-        if (NextPosition == null)
+        if (_currentFrameCount > _lerpFrameCount)
         {
             return;
         }
 
-        var direction = Mathf.Sign(NextPosition.Value - Transform.position.x);
-        var newPos = direction < 0
-            ? Mathf.Max(Transform.position.x + direction * _lerpDelta, NextPosition.Value)
-            : Mathf.Min(Transform.position.x + direction * _lerpDelta, NextPosition.Value);
+        Vector2 pos;
 
-        Transform.position = new Vector3(
-            newPos,
-            _pongObject.Position.y * (PitchSize.y / 2f),
-            Transform.localPosition.z);
-
-        if (Math.Abs(newPos - NextPosition.Value) < float.Epsilon)
+        if (!_previousNextPosition.HasValue)
         {
-            NextPosition = null;
+            pos = new Vector2(Transform.position.x, Transform.position.y);
+            _nextPosition = pos;
+            _currentFrameCount = int.MaxValue;
+        }
+        else
+        {
+            pos = Vector2.Lerp(_previousNextPosition.Value, NextPosition, (_currentFrameCount++ / (float)_lerpFrameCount));
         }
 
+        Transform.position = new Vector3(
+            pos.x,
+            pos.y,
+            Transform.localPosition.z);
     }
 }

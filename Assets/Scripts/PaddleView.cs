@@ -26,26 +26,32 @@ public class PaddleView : PongObjectView
 
         _tiltTweener = GetComponent<PaddleTiltTweener>();
         SignalBus.Subscribe<PaddlePositionChangedSignal>(OnPositionChanged);
-
-        _paddle.BallHit += PaddleOnBallHit;
+        SignalBus.Subscribe<BallHitSignal>(OnBallHit);
     }
 
     private void OnDestroy()
     {
         SignalBus.Unsubscribe<PaddlePositionChangedSignal>(OnPositionChanged);
-        _paddle.BallHit -= PaddleOnBallHit;
+        SignalBus.Unsubscribe<BallHitSignal>(OnBallHit);
     }
 
-    private void PaddleOnBallHit(float relativeHitPosition)
+    private void OnBallHit(BallHitSignal data)
     {
-        _tiltTweener.Run(relativeHitPosition);
+        if (_paddle.Index != data.Arg1)
+        {
+            return;
+        }
+
+        _tiltTweener.Run(data.Arg2);
     }
 
     private void OnPositionChanged(PaddlePositionChangedSignal data)
     {
         if (data.Arg1 == _paddle)
         {
-            NextPosition = _paddle.Position.x * (PitchSize.x / 2f);
+            NextPosition = new Vector2(
+                _paddle.Position.x * (PitchSize.x / 2f),
+                _paddle.Position.y * (PitchSize.y / 2f));
         }
     }
 
